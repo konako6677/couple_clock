@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情侣闹钟</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="alarm-page">
+    <div class="container">
+        <header>
+            <h1>情侣闹钟</h1>
+            <div class="user-info">
+                <span id="user-role"></span>
+                <span id="partner-status">对方状态: 离线</span>
+            </div>
+        </header>
+        
+        <div class="clock-container">
+            <div class="current-time" id="current-time">00:00:00</div>
+        </div>
+        
+        <div class="alarm-container">
+            <h2>设置闹钟</h2>
+            <div class="time-picker">
+                <input type="time" id="alarm-time" required>
+                <button id="set-alarm-btn" class="btn btn-primary">设置闹钟</button>
+            </div>
+            
+            <div class="alarm-list">
+                <h3>已设置的闹钟</h3>
+                <ul id="alarms-list"></ul>
+            </div>
+        </div>
+        
+        <div class="voice-container">
+            <h2>语音消息</h2>
+            <div class="voice-controls">
+                <button id="record-btn" class="btn btn-primary">按住录音</button>
+                <div id="recording-timer" class="hidden">00:00</div>
+            </div>
+            <div class="voice-messages">
+                <h3>收到的语音</h3>
+                <div id="voice-message-list"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="alarm-alert" class="alarm-alert hidden">
+        <div class="alarm-alert-content">
+            <h2>闹钟响了!</h2>
+            <div class="alert-time" id="alert-time">07:00</div>
+            <div class="partner-status" id="alert-partner-status">对方状态: 未起床</div>
+            <div class="dismiss-alarm">
+                <div id="slider-container">
+                    <div id="slider-thumb">滑动关闭闹钟</div>
+                </div>
+            </div>
+            <div class="alert-voice-controls">
+                <button id="alert-record-btn" class="btn btn-primary">按住录音</button>
+                <div id="alert-recording-timer" class="hidden">00:00</div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/alarm.js"></script>
+    <script src="js/voice.js"></script>
+</body>
+</html> 
