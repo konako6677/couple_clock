@@ -8,9 +8,11 @@ module.exports = function(io, db) {
         // 用户登录
         socket.on('login', (data) => {
             const { role } = data;
+            console.log('收到登录请求:', role);
             
             // 验证角色
             if (role !== 'boyfriend' && role !== 'girlfriend') {
+                console.log('无效的用户角色:', role);
                 socket.emit('login_result', {
                     success: false,
                     message: '无效的用户角色'
@@ -18,16 +20,24 @@ module.exports = function(io, db) {
                 return;
             }
             
-            // 检查用户是否已在线
+            // 检查用户是否已在线 - 临时允许重复登录以便测试
             if (db.users[role].online) {
-                socket.emit('login_result', {
-                    success: false,
-                    message: '该用户已登录'
-                });
-                return;
+                console.log('用户已在线，但允许重新登录:', role);
+                // 将之前的连接标记为离线
+                const oldSocketId = db.userSockets[role];
+                if (oldSocketId) {
+                    io.to(oldSocketId).emit('force_logout', {
+                        message: '您的账号在其他设备上登录'
+                    });
+                }
+                
+                // 更新用户状态
+                db.users[role].online = false;
+                delete db.userSockets[role];
             }
             
             // 登录成功
+            console.log('登录成功:', role);
             socket.emit('login_result', {
                 success: true,
                 userId: role

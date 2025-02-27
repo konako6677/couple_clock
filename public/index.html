@@ -11,14 +11,42 @@
         <h1>情侣闹钟</h1>
         <div class="login-form">
             <h2>选择身份登录</h2>
-            <div class="btn-group">
-                <button id="boyfriend-btn" class="btn btn-primary">男生登录</button>
-                <button id="girlfriend-btn" class="btn btn-primary">女生登录</button>
-                <button id="both-btn" class="btn btn-primary">不透露性别</button> 
-            </div>
+            <form id="login-form" method="GET" action="/alarm.html">
+                <input type="hidden" id="role-input" name="role" value="">
+                <div class="btn-group">
+                    <button type="button" onclick="setRoleAndSubmit('boyfriend')" class="btn btn-primary">男生登录</button>
+                    <button type="button" onclick="setRoleAndSubmit('girlfriend')" class="btn btn-primary">女生登录</button>
+                    <button type="button" onclick="setRoleAndSubmit('random')" class="btn btn-primary">不透露性别</button>
+                </div>
+            </form>
         </div>
     </div>
+    
+    <script>
+        function setRoleAndSubmit(role) {
+            if (role === 'random') {
+                const roles = ['boyfriend', 'girlfriend'];
+                role = roles[Math.floor(Math.random() * roles.length)];
+            }
+            
+            // 保存到本地存储
+            localStorage.setItem('userRole', role);
+            localStorage.setItem('userId', role);
+            
+            // 设置表单值并提交
+            document.getElementById('role-input').value = role;
+            document.getElementById('login-form').submit();
+        }
+    </script>
+    
     <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // 确保 Socket.io 库加载成功
+        if (typeof io === 'undefined') {
+            console.error('Socket.io 客户端库加载失败');
+            alert('网页加载不完整，请刷新页面');
+        }
+    </script>
     <script src="js/login.js"></script>
 </body>
 </html> 
